@@ -7,7 +7,7 @@ module.exports = {
          // Fondo
          "lightGray": '#F7F7F7', // Fondo general, moderno y limpio
          "white": '#FFFFFF', // Fondo de secciones específicas como tarjetas o productos
- 
+         "piel": '#fdebd0',
          // Colores principales
         //  "primary": '#4F46E5', // Azul intenso moderno para botones principales y enlaces
         //  "secondary": '#9333EA', // Morado vibrante para destacar detalles importantes

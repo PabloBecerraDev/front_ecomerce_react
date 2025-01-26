@@ -1,92 +1,112 @@
-import useMediaQuery from "@/hooks/useMediaQuery";
+
+import { useState } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
-import { useState, useEffect } from "react";
+import Logo from "@/assets/logo.png";
+import Link from "./Link";
+import { SelectedPage } from "@/shared/types";
+import useMediaQuery from "@/hooks/useMediaQuery";
+import ActionButton from "@/shared/ActionButton";
 
 type Props = {
   isTopOfPage: boolean;
+  selectedPage: SelectedPage;
+  setSelectedPage: (value: SelectedPage) => void;
 };
 
-const Navbar = ({ isTopOfPage }: Props) => {
-const [isScrolled, setIsScrolled] = useState(false);
-const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false);
-const navbarBackground = isTopOfPage ? "" : "bg-primary-100 drop-shadow";
-const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
+const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage }: Props) => {
+  const flexBetween = "flex items-center justify-between";
+  const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false);
+  const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
+  const navbarBackground = isTopOfPage
+  ? ""
+  : "bg-white/60 backdrop-blur-md drop-shadow";
 
   return (
-    <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-primary text-white shadow-lg"
-          : "bg-white/30 backdrop-blur-md text-black"
-      }`}
-    >
+    <nav>
       <div
-        className={`${navbarBackground} container mx-auto flex items-center justify-between py-4 px-7`}
+        className={`${navbarBackground} ${flexBetween} fixed top-0 z-30 w-full py-6`}
       >
-        <h1 className="text-lg font-bold">Mi Portafolio</h1>
+        <div className={`${flexBetween} mx-auto w-5/6`}>
+          <div className={`${flexBetween} w-full gap-16`}>
+            {/* LEFT SIDE */}
+            <img alt="logo" src="Logo" />
 
-        {/* Links para pantallas grandes */}
-        {isAboveMediumScreens ? (
-          <ul className="flex space-x-6">
-            <li>
-              <a href="#about" className="hover:text-secondary">
-                About
-              </a>
-            </li>
-            <li>
-              <a href="#projects" className="hover:text-secondary">
-                Projects
-              </a>
-            </li>
-            <li>
-              <a href="#contact" className="hover:text-secondary">
-                Contact
-              </a>
-            </li>
-          </ul>
-        ) : (
-          <button
-            className="rounded-full p-2"
-            onClick={() => setIsMenuToggled(!isMenuToggled)}
-          >
-            <Bars3Icon className="h-6 w-6 " />
-          </button>
-        )}
+            {/* RIGHT SIDE */}
+            {isAboveMediumScreens ? (
+              <div className={`${flexBetween} w-full`}>
+                <div className={`${flexBetween} gap-8 text-sm`}>
+                  <Link
+                    page="Home"
+                    selectedPage={selectedPage}
+                    setSelectedPage={setSelectedPage}
+                  />
+                  <Link
+                    page="street wear"
+                    selectedPage={selectedPage}
+                    setSelectedPage={setSelectedPage}
+                  />
+                  <Link
+                    page="nuestra marca"
+                    selectedPage={selectedPage}
+                    setSelectedPage={setSelectedPage}
+                  />
+                  <Link
+                    page="contactanos"
+                    selectedPage={selectedPage}
+                    setSelectedPage={setSelectedPage}
+                  />
+                </div>
+                <div className={`${flexBetween} gap-8`}>
+                  <p>Sign In</p>
+                  <ActionButton setSelectedPage={setSelectedPage}>
+                    Become a Member
+                  </ActionButton>
+                </div>
+              </div>
+            ) : (
+              <button
+                className="rounded-full bg-slate-200 p-2"
+                onClick={() => setIsMenuToggled(!isMenuToggled)}
+              >
+                <Bars3Icon className="h-6 w-6 text-white" />
+              </button>
+            )}
+          </div>
+        </div>
       </div>
 
-      {/* Menú desplegable para pantallas pequeñas */}
+      {/* MOBILE MENU MODAL */}
       {!isAboveMediumScreens && isMenuToggled && (
-        <div className="fixed right-0 bottom-0 z-40 h-full w-[300px] bg-white">
-          {/* Ícono para cerrar el menú */}
+        <div className="fixed right-0 bottom-0 z-40 h-full w-[300px] bg-slate-200	 drop-shadow-xl">
+          {/* CLOSE ICON */}
           <div className="flex justify-end p-12">
             <button onClick={() => setIsMenuToggled(!isMenuToggled)}>
               <XMarkIcon className="h-6 w-6 text-gray-400" />
             </button>
           </div>
 
-          {/* Ítems del menú */}
-          <div className="flex flex-col items-center gap-10 text-lg">
-            <a
-              href="#about"
-              className="hover:text-secondary"
-              onClick={() => setIsMenuToggled(false)}
-            >
-              About
-            </a>
-            <a
-              href="#projects"
-              className="hover:text-secondary"
-              onClick={() => setIsMenuToggled(false)}
-            >
-              Projects
-            </a>
-            <a
-              href="#contact"
-              className="hover:text-secondary"
-              onClick={() => setIsMenuToggled(false)}
-            >
-              Contact
-            </a>
+          {/* MENU ITEMS */}
+          <div className="ml-[33%] flex flex-col gap-10 text-2xl">
+            <Link
+              page="Home"
+              selectedPage={selectedPage}
+              setSelectedPage={setSelectedPage}
+            />
+            <Link
+              page="Benefits"
+              selectedPage={selectedPage}
+              setSelectedPage={setSelectedPage}
+            />
+            <Link
+              page="Our Classes"
+              selectedPage={selectedPage}
+              setSelectedPage={setSelectedPage}
+            />
+            <Link
+              page="Contact Us"
+              selectedPage={selectedPage}
+              setSelectedPage={setSelectedPage}
+            />
           </div>
         </div>
       )}
